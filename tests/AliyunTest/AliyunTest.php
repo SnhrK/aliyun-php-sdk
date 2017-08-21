@@ -2,14 +2,14 @@
 namespace AliyunTest;
 
 class AliyunTest extends \PHPUnit\Framework\TestCase {
-    
+
         /**
          * @test
          */
         public function aliyuntest()
         {
-            $expected   = [120, 20, 22];
-            $actual   = [120, 20, 22];
+            $expected   = ['test'];
+            $actual   = ['test'];
             $this->assertEquals($expected, $actual);
         }
 }
