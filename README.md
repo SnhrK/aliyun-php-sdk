@@ -1,3 +1,3 @@
 # aliyun-php-sdk
 aliyun-php-sdk
-https://travis-ci.org/SnhrK/aliyun-php-sdk.svg?branch=master
+[![Build Status](https://travis-ci.org/SnhrK/aliyun-php-sdk.svg?branch=master)](https://travis-ci.org/SnhrK/aliyun-php-sdk)
