@@ -1,3 +1,5 @@
 /vendor/
 phpunit.xml
 /tests/
+.travis.yml
+.phpunit.xml.dist
