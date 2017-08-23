@@ -25,7 +25,7 @@ class EcsClientTest extends AliyunTestBase {
     public function testDescribeRegion() {
         $this->setEcsClient();
         $setter = [];
-        $actual = $this->target->setClient(self::TEST_REGION, $_ENV['TEST_ALIYUN_ACCESS'], $_ENV['TEST_ALIYUN_SECRET'])->describeRegion($setter);
+        $actual = $this->target->describeRegion($setter);
         $this->assertInternalType("array", $actual);
         $this->assertArrayHasKey("RequestId", $actual);
         $this->assertArrayHasKey("Regions", $actual);
@@ -37,7 +37,7 @@ class EcsClientTest extends AliyunTestBase {
      public function testCreateVpc() {
          $this->setEcsClient();
          $setter = ['CidrBlock' => '10.0.0.0/08', 'VpcName' => 'aliyun-php-test'];
-         $actual = $this->target->setClient(self::TEST_REGION, $_ENV['TEST_ALIYUN_ACCESS'], $_ENV['TEST_ALIYUN_SECRET'])->createVpc($setter);
+         $actual = $this->target->createVpc($setter);
          $this->assertInternalType("array", $actual);
          $this->assertArrayHasKey("VpcId", $actual);
      }
@@ -48,7 +48,7 @@ class EcsClientTest extends AliyunTestBase {
       public function testCreateVSwitch() {
           $this->setEcsClient();
           $setter = [];
-          $result = $this->target->setClient('ap-northeast-1', $_ENV['TEST_ALIYUN_ACCESS'], $_ENV['TEST_ALIYUN_SECRET'])->describeVpc($setter);
+          $result = $this->target->describeVpc($setter);
           $this->assertInternalType("array", $result);
           $this->assertArrayHasKey("Vpcs", $result);
           $setter = ['CidrBlock' => '10.0.0.0/24', 'VpcId' => $result['Vpcs']['Vpc'][0]['VpcId'], 'ZoneId' => self::TEST_ZONE];
