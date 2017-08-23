@@ -15,3 +15,7 @@ $result = $this->ecs
     ->describeRegion(['Method' => 'GET']);
 print_r($result);
 ```
+
+## Authors && Contributors
+
+- [SnhrK](https://github.com/SnhrK)
