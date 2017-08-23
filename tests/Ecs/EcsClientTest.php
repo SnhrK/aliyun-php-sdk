@@ -13,7 +13,7 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     function testSetClient() {
-        $this->target->setClient(self::TEST_REGION, $_ENV['TEST_ALIYUN_ACCESS'], $_ENV['TEST_ALIYUN_SECRET']);
+        $this->target->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
         $actual = (array)$this->target->aliyunclient;
         $this->assertArrayHasKey("iClientProfile", $actual);
         $this->assertArrayHasKey("__urlTestFlag__", $actual);
@@ -82,7 +82,7 @@ class EcsClientTest extends AliyunTestBase {
       }
 
       function setEcsClient() {
-          $this->target->setClient(self::TEST_REGION, $_ENV['TEST_ALIYUN_ACCESS'], $_ENV['TEST_ALIYUN_SECRET']);
+          $this->target->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
           return $this;
       }
 
