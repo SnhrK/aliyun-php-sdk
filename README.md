@@ -11,7 +11,7 @@ use Aliyun\Ecs\EcsClient;
 
 $this->ecs = new EcsClient();
 $result = $this->ecs
-    ->setClient(ALIYUN_REGION, ALIYUN_ACCESS_KEY, ALIYUN_SECRET_KEY)
+    ->setClient("cn-hangzhou", "<your accessKey>", "<your accessSecret>")
     ->describeRegion(['Method' => 'GET']);
 print_r($result);
 ```
