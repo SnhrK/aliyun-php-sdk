@@ -1,8 +1,4 @@
-<phpunit bootstrap="tests/AliyunTest/bootstrap.php"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         syntaxCheck="false">
+<phpunit bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="Aliyun Test Suite">
             <directory suffix="Test.php">./tests/</directory>
