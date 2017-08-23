@@ -60,6 +60,7 @@ trait ClientTrait {
             if ($status != $chkStatus) usleep(500000);
             $status = $this->executeClient($request, $setter);
             if (!empty($setter['VpcId'])) $status = $status['Vpcs']['Vpc'][0]['Status'];
+            if (!empty($setter['VSwitchId'])) $status = $status['VSwitches']['VSwitch'][0]['Status'];
             if (!empty($setter['InstanceIds'][0])) $status = $status['Instances']['Instance'][0]['Status'];
             $retryCount ++;
         }

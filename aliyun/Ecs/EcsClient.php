@@ -55,8 +55,46 @@ class EcsClient extends Client {
     * @return array result
     */
     function deleteVpc(array $setter, $time = 0) {
-        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), ['Method' => 'POST']+$setter, 'Available')
+        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), ['Method' => 'GET']+$setter, 'Available')
             ->executeClient(new Ecs\DeleteVpcRequest(), ['Method' => 'POST']+$setter, $time);
         return $result;
     }
+
+    /**
+    * create VSwith
+    * @param array $output execute Aliyun Value Output
+    * @param string $zonne_id ZeoneId
+    * @return $this
+    */
+    function createVSwitch(array $setter, $time = 0) {
+        $describe = ['Method' => 'GET', 'VpcId' => $setter['VpcId']];
+        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), $describe, 'Available')
+            ->executeClient(new Ecs\CreateVSwitchRequest(), ['Method' => 'POST']+$setter, $time);
+        return $result;
+    }
+
+    /**
+    * delete VSwith
+    * @param array $output execute Aliyun Value Output
+    * @param string $zonne_id ZeoneId
+    * @return $this
+    */
+    function deleteVSwitch(array $setter, $time = 0) {
+        $result = $this->retryExecuteClient(new Ecs\DescribeVSwitchesRequest(), ['Method' => 'GET']+$setter, 'Available')
+            ->executeClient(new Ecs\DeleteVSwitchRequest(), ['Method' => 'POST']+$setter, $time);
+        return $result;
+    }
+
+    /**
+    * describe VSwitch
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function describeVSwitch(array $setter, $time = 0) {
+        $setter += ['Method' => 'GET'];
+        $result = $this->executeClient(new Ecs\DescribeVSwitchesRequest(), $setter, $time);
+        return $result;
+    }
+
 }
