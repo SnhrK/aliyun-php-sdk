@@ -97,4 +97,76 @@ class EcsClient extends Client {
         return $result;
     }
 
+    /**
+    * Create securitygroup
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function createSecurityGroup(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\CreateSecurityGroupRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+    * Authorize securitygroup
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function authorizeSecurityGroup(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\AuthorizeSecurityGroupRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+    * create Keypair
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function createKeypair(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\CreateKeypairRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+    * create Instance
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function createInstance(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\CreateInstanceRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+    * allocate PublicIp
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function allocatePublicIp(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\AllocatePublicIpRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+    * start Instance
+    * @param array $setter Setter is options eg.[Method => GET];
+    * @param integer $time Time to delay execution
+    * @return array result
+    */
+    function startInstance(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Ecs\StartInstanceRequest(), $setter, $time);
+        return $result;
+    }
+
 }
