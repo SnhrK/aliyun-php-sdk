@@ -13,11 +13,11 @@ class SlbClient extends Client {
      */
     use ClientTrait;
     /**
-    * create ServerLoadBalancer
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * create ServerLoadBalancer
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function createLoadBalancer(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerRequest(), $setter, $time);
@@ -25,11 +25,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * describe ServerLoadBalancer
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * describe ServerLoadBalancer
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function describeLoadBalancer(array $setter, $time = 0) {
         $setter += ['Method' => 'GET'];
         $result = $this->executeClient(new Slb\DescribeLoadBalancersRequest(), $setter, $time);
@@ -37,11 +37,23 @@ class SlbClient extends Client {
     }
 
     /**
-    * create ServerLoadBalancerHTTPListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * set ServerLoadBalancerStatus
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function setLoadBalancerStatus(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Slb\SetLoadBalancerStatusRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+     * create ServerLoadBalancerHTTPListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function createLoadBalancerHTTPListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPListenerRequest(), $setter, $time);
@@ -49,11 +61,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * create ServerLoadBalancerHTTPSListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * create ServerLoadBalancerHTTPSListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function createLoadBalancerHTTPSListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPSListenerRequest(), $setter, $time);
@@ -61,11 +73,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * create ServerLoadBalancerTCPListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * create ServerLoadBalancerTCPListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function createLoadBalancerTCPListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerTCPListenerRequest(), $setter, $time);
@@ -73,11 +85,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * create ServerLoadBalancerUDPListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * create ServerLoadBalancerUDPListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function createLoadBalancerUDPListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerUDPListenerRequest(), $setter, $time);
@@ -85,11 +97,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * start LoadBalancerListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * start LoadBalancerListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function startLoadBalancerListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\StartLoadBalancerListenerRequest(), $setter, $time);
@@ -97,11 +109,23 @@ class SlbClient extends Client {
     }
 
     /**
-    * delete LoadBalancerListenter
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * stop LoadBalancerListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function stopLoadBalancerListener(array $setter, $time = 0) {
+        $setter += ['Method' => 'POST'];
+        $result = $this->executeClient(new Slb\StopLoadBalancerListenerRequest(), $setter, $time);
+        return $result;
+    }
+
+    /**
+     * delete LoadBalancerListenter
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function deleteLoadBalancerListener(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\DeleteLoadBalancerListenerRequest(), $setter, $time);
@@ -109,11 +133,11 @@ class SlbClient extends Client {
     }
 
     /**
-    * delete LoadBalancer
-    * @param array $setter Setter is options eg.[Method => GET];
-    * @param integer $time Time to delay execution
-    * @return array result
-    */
+     * delete LoadBalancer
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
     function deleteLoadBalancer(array $setter, $time = 0) {
         $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\DeleteLoadBalancerRequest(), $setter, $time);
