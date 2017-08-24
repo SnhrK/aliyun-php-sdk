@@ -20,8 +20,8 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-    * Test for testDescribeRegion
-    */
+     * Test for testDescribeRegion
+     */
     public function testDescribeRegion($setter = []) {
         $actual = $this->setEcsClient()->target->describeRegion($setter);
         $this->assertInternalType("array", $actual);
@@ -30,8 +30,8 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-    * Test for testCreateVpc
-    */
+     * Test for testCreateVpc
+     */
     public function testCreateVpc() {
         $setter = ['CidrBlock' => '10.0.0.0/08', 'VpcName' => 'aliyun-php-test'];
         $actual = $this->setEcsClient()->target->createVpc($setter);
@@ -40,8 +40,8 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-    * Test for testCreateVSwitch
-    */
+     * Test for testCreateVSwitch
+     */
     public function testCreateVSwitch($setter = []) {
         $result = $this->setEcsClient()->target->describeVpc($setter);
         $this->assertInternalType("array", $result);
@@ -53,8 +53,8 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-    * Test for testDeleteVpc
-    */
+     * Test for testDeleteVpc
+     */
     public function testDeleteVpc($setter = []) {
         //delete vswitch
         $result = $this->setEcsClient()->target->describeVSwitch($setter);

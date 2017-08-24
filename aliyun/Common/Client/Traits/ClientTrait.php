@@ -7,11 +7,11 @@ namespace Aliyun\Common\Client\Traits;
  */
 trait ClientTrait {
     /**
-    * Set Client Profile Aliyun
-    * @param string $region Region eg.ap-northeast-1
-    * @param string $cred User credential
-    * @return $this $class
-    */
+     * Set Client Profile Aliyun
+     * @param string $region Region eg.ap-northeast-1
+     * @param string $cred User credential
+     * @return $this $class
+     */
     public function setClient($region, $access, $secret) {
         $iClientProfile = \DefaultProfile::getProfile($region, $access, $secret);
         $this->aliyunclient = new \DefaultAcsClient($iClientProfile);
@@ -19,12 +19,12 @@ trait ClientTrait {
     }
 
     /**
-    * Execute AliyunClient
-    * @param string $request Request eg.aliyun AcsRequest
-    * @param array $set Set Request Parameter
-    * @param int $waittime Waittime is execute wait
-    * @return mixed $result
-    */
+     * Execute AliyunClient
+     * @param string $request Request eg.aliyun AcsRequest
+     * @param array $set Set Request Parameter
+     * @param int $waittime Waittime is execute wait
+     * @return mixed $result
+     */
     protected function executeClient($request, $setter, $waittime = 0) {
         if (!empty($waittime)) sleep($waittime);
         $result = $this->setAcsRequest($request, $setter)->aliyunclient->getAcsResponse($request);
@@ -32,11 +32,11 @@ trait ClientTrait {
     }
 
     /**
-    * set AcsRequest
-    * @param mixed $request eg.aliyun AcsRequest
-    * @param array $set AcsRequest setValue eg. ['Method' => 'GET']
-    * @return $this
-    */
+     * set AcsRequest
+     * @param mixed $request eg.aliyun AcsRequest
+     * @param array $set AcsRequest setValue eg. ['Method' => 'GET']
+     * @return $this
+     */
     protected function setAcsRequest($request, $setter) {
         foreach ($setter as $key => $value) {
             $set = 'set'.$key;
@@ -46,13 +46,13 @@ trait ClientTrait {
     }
 
     /**
-    * Function to retry until the status is successfully confirmed
-    * @param mixed $request Request aliyun
-    * @param array $option Option aliyun parameter
-    * @param int $maxRetryCount MaxRetryCount
-    * @param string $chkStatus Check Status
-    * @return $this
-    */
+     * Function to retry until the status is successfully confirmed
+     * @param mixed $request Request aliyun
+     * @param array $option Option aliyun parameter
+     * @param int $maxRetryCount MaxRetryCount
+     * @param string $chkStatus Check Status
+     * @return $this
+     */
     protected function retryExecuteClient($request, $setter, $chkStatus, $maxRetryCount = 5) {
         $status = '';
         $retryCount = 0;
