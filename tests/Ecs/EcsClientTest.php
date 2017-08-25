@@ -15,8 +15,8 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testDescribeRegion
      */
-    public function testDescribeRegion($setter = []) {
-        $actual = $this->target->describeRegion($setter);
+    public function testDescribeRegion() {
+        $actual = $this->target->describeRegion();
         $this->assertInternalType("array", $actual);
         $this->assertArrayHasKey("RequestId", $actual);
         $this->assertArrayHasKey("Regions", $actual);
@@ -35,8 +35,8 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testDescribeVpc
      */
-    public function testDescribeVpc($setter = []) {
-        $actual = $this->target->describeVpc($setter);
+    public function testDescribeVpc() {
+        $actual = $this->target->describeVpc();
         $this->assertInternalType("array", $actual);
         $this->assertArrayHasKey("Vpcs", $actual);
     }
@@ -44,8 +44,8 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testCreateVSwitch
      */
-    public function testCreateVSwitch($setter = []) {
-        $vpc_id = $this->target->describeVpc($setter)['Vpcs']['Vpc'][0]['VpcId'];
+    public function testCreateVSwitch() {
+        $vpc_id = $this->target->describeVpc()['Vpcs']['Vpc'][0]['VpcId'];
         $this->assertInternalType("string", $vpc_id);
         $setter = ['CidrBlock' => '10.0.0.0/24', 'VpcId' => $vpc_id, 'ZoneId' => self::TEST_ZONE];
         $actual = $this->target->createVSwitch($setter);
@@ -56,8 +56,8 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testCreateSecurityGroup
      */
-    public function testCreateSecurityGroup($setter = []) {
-        $vpc_id = $this->target->describeVpc($setter)['Vpcs']['Vpc'][0]['VpcId'];
+    public function testCreateSecurityGroup() {
+        $vpc_id = $this->target->describeVpc()['Vpcs']['Vpc'][0]['VpcId'];
         $this->assertInternalType("string", $vpc_id);
         $setter = ['VpcId' => $vpc_id];
         $actual = $this->target->createSecurityGroup($setter);
@@ -67,38 +67,44 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testDescribeSecurityGroup
      */
-    public function testDescribeSecurityGroup($setter = []) {
-        $actual = $this->target->describeSecurityGroup($setter);
+    public function testDescribeSecurityGroup() {
+        $actual = $this->target->describeSecurityGroup();
         $this->assertArrayHasKey("SecurityGroups", $actual);
     }
 
     /**
      * Test for testAuthorizeSecurityGroup
+     * AuthorizeSecurityGroup, AuthorizeSecurityGroupEgress
+     * @dataProvider getProvidorAuthorizeSecurityGroup
      */
-    public function testAuthorizeSecurityGroup($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
+    public function testAuthorizeSecurityGroup($setter) {
+        $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
         $this->assertInternalType("string", $sg_id);
-        $setter = ['SecurityGroupId' => $sg_id, 'NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0'];
-        $actual = $this->target->authorizeSecurityGroup($setter);
+        $setter += ['SecurityGroupId' => $sg_id];
+        if (!empty($setter['SourceCidrIp'])) {
+            $actual = $this->target->authorizeSecurityGroup($setter);
+        }elseif (!empty($setter['DestCidrIp'])) {
+            $actual = $this->target->authorizeSecurityGroupEgress($setter);
+        }
         $this->assertInternalType("array", $actual);
     }
 
     /**
-     * Test for testAuthorizeSecurityGroupEgress
+     * Test Providor for AuthorizeSecurityGroup
+     * @return array The list of Test Parameters
      */
-    public function testAuthorizeSecurityGroupEgress($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
-        $this->assertInternalType("string", $sg_id);
-        $setter = ['SecurityGroupId' => $sg_id, 'NicType' => 'intranet', 'IpProtocol' => 'all', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '1', 'DestCidrIp' => '0.0.0.0/0'];
-        $actual = $this->target->authorizeSecurityGroupEgress($setter);
-        $this->assertInternalType("array", $actual);
+    function getProvidorAuthorizeSecurityGroup() {
+        return [
+            'ingress' => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0']],
+            'egress'  => [['NicType' => 'intranet', 'IpProtocol' => 'all', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '1', 'DestCidrIp' => '0.0.0.0/0']],
+        ];
     }
 
     /**
      * Test for testDescribeSecurityGroupAttribute
      */
-    public function testDescribeSecurityGroupAttribute($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
+    public function testDescribeSecurityGroupAttribute() {
+        $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
         $this->assertInternalType("string", $sg_id);
         $setter = ['SecurityGroupId' => $sg_id];
         $actual = $this->target->describeSecurityGroupAttribute($setter);
@@ -107,31 +113,37 @@ class EcsClientTest extends AliyunTestBase {
 
     /**
      * Test for testRevokeSecurityGroup
+     * RevokeSecurityGroup, RevokeSecurityGroupEgress
+     * @dataProvider getProvidorRevokeSecurityGroup
      */
-    public function testRevokeSecurityGroup($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
+    public function testRevokeSecurityGroup($setter) {
+        $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
         $this->assertInternalType("string", $sg_id);
-        $setter = ['SecurityGroupId' => $sg_id, 'IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0'];
-        $actual = $this->target->revokeSecurityGroup($setter);
+        $setter += ['SecurityGroupId' => $sg_id];
+        if (!empty($setter['SourceCidrIp'])) {
+            $actual = $this->target->revokeSecurityGroup($setter);
+        }elseif (!empty($setter['DestCidrIp'])) {
+            $actual = $this->target->revokeSecurityGroupEgress($setter);
+        }
         $this->assertInternalType("array", $actual);
     }
 
     /**
-     * Test for testRevokeSecurityGroupEgress
+     * Test Providor for RevokeSecurityGroup
+     * @return array The list of Test Parameters
      */
-    public function testRevokeSecurityGroupEgress($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
-        $this->assertInternalType("string", $sg_id);
-        $setter = ['SecurityGroupId' => $sg_id, 'IpProtocol' => 'all', 'PortRange' => '-1/-1', 'DestCidrIp' => '0.0.0.0/0'];
-        $actual = $this->target->revokeSecurityGroupEgress($setter);
-        $this->assertInternalType("array", $actual);
+    function getProvidorRevokeSecurityGroup() {
+        return [
+            'ingress' => [['IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0']],
+            'egress'  => [['IpProtocol' => 'all', 'PortRange' => '-1/-1', 'DestCidrIp' => '0.0.0.0/0']],
+        ];
     }
 
     /**
      * Test for testDeleteSecurityGroup
      */
-    public function testDeleteSecurityGroup($setter = []) {
-        $sg_id = $this->target->describeSecurityGroup($setter)['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
+    public function testDeleteSecurityGroup() {
+        $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
         $this->assertInternalType("string", $sg_id);
         $setter = ['SecurityGroupId' => $sg_id];
         $actual = $this->target->deleteSecurityGroup($setter);
@@ -141,20 +153,18 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testDeleteVpc
      */
-    public function testDeleteVpc($setter = []) {
+    public function testDeleteVpc() {
         //delete vswitch
-        $result = $this->target->describeVSwitch($setter);
-        $this->assertInternalType("array", $result);
-        $this->assertArrayHasKey("VSwitches", $result);
-        $vswitch_setter = ['VSwitchId' => $result['VSwitches']['VSwitch'][0]['VSwitchId']];
+        $vswitch_id = $this->target->describeVSwitch()['VSwitches']['VSwitch'][0]['VSwitchId'];
+        $this->assertInternalType("string", $vswitch_id);
+        $vswitch_setter = ['VSwitchId' => $vswitch_id];
         $actual = $this->target->deleteVSwitch($vswitch_setter);
         $this->assertInternalType("array", $actual);
 
         // //delete vpc
-        $result = $this->target->describeVpc($setter);
-        $this->assertInternalType("array", $result);
-        $this->assertArrayHasKey("Vpcs", $result);
-        $setter = ['VpcId' => $result['Vpcs']['Vpc'][0]['VpcId']];
+        $vpc_id = $this->target->describeVpc()['Vpcs']['Vpc'][0]['VpcId'];
+        $this->assertInternalType("string", $vpc_id);
+        $setter = ['VpcId' => $vpc_id];
         $actual = $this->target->deleteVpc($setter);
         $this->assertInternalType("array", $actual);
     }
