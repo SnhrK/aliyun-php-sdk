@@ -23,6 +23,7 @@ abstract class AliyunTestBase extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->target = $this->getTargetInstance();
+        $this->target->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
     }
 
     /**
