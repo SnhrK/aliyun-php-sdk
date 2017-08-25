@@ -194,6 +194,28 @@ class EcsClient extends Client {
     }
 
     /**
+     * describe Keypair
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeKeypair(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ecs\DescribeKeyPairsRequest(), $setter+Client::METHOD['GET'], $time);
+        return $result;
+    }
+
+    /**
+     * delete Keypair
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function deleteKeypair(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ecs\DeleteKeyPairsRequest(), $setter+Client::METHOD['POST'], $time);
+        return $result;
+    }
+
+    /**
      * create Instance
      * @param array $setter Setter is options eg.[Method => GET];
      * @param integer $time Time to delay execution

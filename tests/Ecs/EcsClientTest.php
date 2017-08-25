@@ -96,8 +96,9 @@ class EcsClientTest extends AliyunTestBase {
      */
     function getProvidorAuthorizeSecurityGroup() {
         return [
-            'ingress' => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0']],
-            'egress'  => [['NicType' => 'intranet', 'IpProtocol' => 'all', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '1', 'DestCidrIp' => '0.0.0.0/0']],
+            'ingress/tcp'   => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0']],
+            'ingress/icmp'  => [['NicType' => 'intranet', 'IpProtocol' => 'icmp', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '10', 'SourceCidrIp' => '0.0.0.0/0']],
+            'egress'        => [['NicType' => 'intranet', 'IpProtocol' => 'all', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '100', 'DestCidrIp' => '0.0.0.0/0']],
         ];
     }
 
@@ -109,6 +110,64 @@ class EcsClientTest extends AliyunTestBase {
         $this->assertInternalType("string", $sg_id);
         $setter = ['SecurityGroupId' => $sg_id];
         $actual = $this->target->describeSecurityGroupAttribute($setter);
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test for testCreateKeypair
+     */
+    public function testCreateKeypair() {
+        $setter = ['KeyPairName' => self::TEST_ID];
+        $actual = $this->target->createKeypair($setter);
+        $this->assertInternalType("array", $actual);
+        $this->assertArrayHasKey("KeyPairFingerPrint", $actual);
+        $this->assertArrayHasKey("PrivateKeyBody", $actual);
+    }
+
+    /**
+     * Test for testDescribeKeypair
+     */
+    public function testDescribeKeypair() {
+        $actual = $this->target->describeKeypair();
+        $this->assertInternalType("array", $actual);
+        $this->assertArrayHasKey("KeyPairs", $actual);
+    }
+
+    /**
+     * Test for testCreateInstance
+     * @dataProvider getProvidorCreateInstance
+     * @param array $setter Request Value
+     */
+    public function testCreateInstance($setter) {
+        $vswitch_id = $this->target->describeVSwitch()['VSwitches']['VSwitch'][0]['VSwitchId'];
+        $this->assertInternalType("string", $vswitch_id);
+        $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
+        $this->assertInternalType("string", $sg_id);
+        $keypair = $this->target->describeKeypair()['KeyPairs']['KeyPair'][0]['KeyPairName'];
+        $this->assertInternalType("string", $keypair);
+        $setter += ['VSwitchId' => $vswitch_id, 'SecurityGroupId' => $sg_id, 'KeyPairName' => $keypair];
+        $actual = $this->target->createInstance($setter);
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test Providor for CreateInstance
+     * @return array The list of Test Parameters
+     */
+    function getProvidorCreateInstance() {
+        return [
+            'success' => [
+                  ['InstanceName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic', 'SystemDiskCategory' => 'cloud_efficiency']
+            ],
+        ];
+    }
+
+    /**
+     * Test for testDeleteKeypair
+     */
+    public function testDeleteKeypair() {
+        $setter = ['KeyPairNames' => json_encode([self::TEST_ID])];
+        $actual = $this->target->deleteKeypair($setter);
         $this->assertInternalType("array", $actual);
     }
 
@@ -136,8 +195,9 @@ class EcsClientTest extends AliyunTestBase {
      */
     function getProvidorRevokeSecurityGroup() {
         return [
-            'ingress' => [['IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0']],
-            'egress'  => [['IpProtocol' => 'all', 'PortRange' => '-1/-1', 'DestCidrIp' => '0.0.0.0/0']],
+            'ingress/tcp'   => [['IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0']],
+            'ingress/icmp'  => [['IpProtocol' => 'icmp', 'PortRange' => '-1/-1', 'SourceCidrIp' => '0.0.0.0/0']],
+            'egress'        => [['IpProtocol' => 'all', 'PortRange' => '-1/-1', 'DestCidrIp' => '0.0.0.0/0']],
         ];
     }
 

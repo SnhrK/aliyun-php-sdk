@@ -21,6 +21,16 @@ abstract class AliyunTestBase extends TestCase {
     const TEST_ID = "aliyun-sdk-test";
 
     /**
+     * The imageid for test
+     */
+    const TEST_IMAGE_ID = "centos_7_03_64_40G_alibase_20170710.vhd";
+
+    /**
+     * The instancetype for test
+     */
+    const TEST_INSTANCE_TYPE = "ecs.n4.small";
+
+    /**
      * Instance object of test target class
      */
     protected $target;
