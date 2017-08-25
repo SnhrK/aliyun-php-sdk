@@ -12,19 +12,12 @@ class SlbClientTest extends AliyunTestBase {
         return new SlbClient();
     }
 
-    function testSetClient() {
-        $this->setSlbClient();
-        $actual = (array)$this->target->aliyunclient;
-        $this->assertArrayHasKey("iClientProfile", $actual);
-        $this->assertArrayHasKey("__urlTestFlag__", $actual);
-    }
-
     /**
      * Test for testCreateLoadBalancer
      */
     public function testCreateLoadBalancer() {
         $setter = ['LoadBalancerName' => 'aliyun-php-test','AddressType' => 'internet','InternetChargeType' => 'paybytraffic','Bandwidth' => 1];
-        $actual = $this->setSlbClient()->target->createLoadBalancer($setter);
+        $actual = $this->target->createLoadBalancer($setter);
         $this->assertInternalType("array", $actual);
         $this->assertArrayHasKey("LoadBalancerId", $actual);
     }
@@ -32,48 +25,38 @@ class SlbClientTest extends AliyunTestBase {
     /**
      * Test for testDescribeLoadBalancer
      */
-    public function testDescribeLoadBalancer($setter = []) {
-        $actual = $this->setSlbClient()->target->describeLoadBalancer($setter);
-        // var_dump($actual['LoadBalancers']['LoadBalancer'][0]);
+    public function testDescribeLoadBalancer() {
+        $actual = $this->target->describeLoadBalancer();
         $this->assertInternalType("array", $actual);
+        $setter = ['LoadBalancerId' => $actual['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId']];
+        $actual = $this->target->describeLoadBalancerAttribute($setter);
+        $this->assertInternalType("array", $actual);
+        $this->assertArrayHasKey("ListenerPorts", $actual);
+
     }
 
     /**
      * Test for testCreateLoadBalancerListener
      * testCreateLoadBalancerHTTPListener, testCreateLoadBalancerTCPListener
      * @dataProvider getProvidorCreateLoadBalancerListener
-     * @param array $setter Request Set Value
-     * @param integer $httpPort Request Value
-     * @param integer $tcpPort Request Value
+     * @param array $setter Request Value
      */
-    public function testCreateLoadBalancerListener($setter = [], $httpPort, $tcpPort) {
-        $loadbalancer_id = $this->setSlbClient()->target->describeLoadBalancer($setter)['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
+    public function testCreateLoadBalancerListener($setter) {
+        $loadbalancer_id = $this->target->describeLoadBalancer()['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
         $this->assertInternalType("string", $loadbalancer_id);
-        //HTTP
-        $setter = ['LoadBalancerId' => $loadbalancer_id,'ListenerPort' => $httpPort, 'BackendServerPort' => $httpPort, 'Bandwidth' => -1, 'StickySession' => 'off', 'HealthCheck' => 'on', 'HealthCheckDomain' => '$_ip',
-           'HealthCheckURI' => '/index.html', 'HealthCheckConnectPort' => $httpPort, 'HealthyThreshold' => 2, 'UnhealthyThreshold' => 10, 'HealthCheckTimeout' => 5, 'HealthCheckInterval' => 10, 'HealthCheckHttpCode' => 'http_2xx'
-        ];
-        $actual = $this->target->createLoadBalancerHTTPListener($setter);
+        $setter += ['LoadBalancerId' => $loadbalancer_id];
+        if (!empty($setter['StickySession']) && !empty($setter['HealthCheck'])) {
+            $actual = $this->target->createLoadBalancerHTTPListener($setter);
+        } else {
+            $actual = $this->target->createLoadBalancerTCPListener($setter);
+        }
         $this->assertInternalType("array", $actual);
         //start
-        $http_setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $httpPort];
-        $actual = $this->target->startLoadBalancerListener($http_setter);
+        $ope_setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $setter['ListenerPort']];
+        $actual = $this->target->startLoadBalancerListener($ope_setter);
         $this->assertInternalType("array", $actual);
         //stop
-        $actual = $this->target->stopLoadBalancerListener($http_setter);
-        $this->assertInternalType("array", $actual);
-
-        //TCP
-        unset($setter['StickySession'], $setter['HealthCheck'], $setter['HealthCheckTimeout'], $setter['ListenerPort'], $setter['BackendServerPort'], $setter['HealthCheckConnectPort']);
-        $setter += ['ListenerPort' => $tcpPort, 'BackendServerPort' => $tcpPort, 'HealthCheckConnectPort' => $tcpPort];
-        $actual = $this->target->createLoadBalancerTCPListener($setter);
-        $this->assertInternalType("array", $actual);
-        //start
-        $tcp_setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $tcpPort];
-        $actual = $this->target->startLoadBalancerListener($tcp_setter);
-        $this->assertInternalType("array", $actual);
-        //stop
-        $actual = $this->target->stopLoadBalancerListener($tcp_setter);
+        $actual = $this->target->stopLoadBalancerListener($ope_setter);
         $this->assertInternalType("array", $actual);
     }
 
@@ -83,58 +66,59 @@ class SlbClientTest extends AliyunTestBase {
      */
     function getProvidorCreateLoadBalancerListener() {
         return [
-            'success' => [[], 80, 20],
+            'http' => [['ListenerPort' => 80, 'BackendServerPort' => 80, 'Bandwidth' => -1, 'StickySession' => 'off', 'HealthCheck' => 'on', 'HealthCheckDomain' => '$_ip', 'HealthCheckURI' => '/index.html',
+                'HealthCheckConnectPort' => 80, 'HealthyThreshold' => 2, 'UnhealthyThreshold' => 10, 'HealthCheckTimeout' => 5, 'HealthCheckInterval' => 10, 'HealthCheckHttpCode' => 'http_2xx'
+            ]],
+            'tcp' => [['ListenerPort' => 22, 'BackendServerPort' => 22, 'Bandwidth' => -1, 'HealthCheckDomain' => '$_ip', 'HealthCheckURI' => '/index.html', 'HealthCheckConnectPort' => 22,
+                'HealthyThreshold' => 2, 'UnhealthyThreshold' => 10, 'HealthCheckInterval' => 10, 'HealthCheckHttpCode' => 'http_2xx'
+            ]],
         ];
     }
 
     /**
      * Test for testSetLoadBalancerStatus
      */
-    public function testSetLoadBalancerStatus($setter = []) {
-        $loadbalancer_id = $this->setSlbClient()->target->describeLoadBalancer($setter)['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
+    public function testSetLoadBalancerStatus() {
+        $loadbalancer_id = $this->target->describeLoadBalancer()['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
         $this->assertInternalType("string", $loadbalancer_id);
         $setter = ['LoadBalancerId' => $loadbalancer_id,'LoadBalancerStatus' => 'active'];
-        $actual = $this->setSlbClient()->target->setLoadBalancerStatus($setter);
+        $actual = $this->target->setLoadBalancerStatus($setter);
         $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test for testDeleteLoadBalancerListener
+     * @dataProvider getProvidorDeleteLoadBalancerListener
+     * @param integer $httpPort Request Value
+     */
+    public function testDeleteLoadBalancerListener($port) {
+        $loadbalancer_id = $this->target->describeLoadBalancer()['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
+        $this->assertInternalType("string", $loadbalancer_id);
+        $setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $port];
+        $actual = $this->target->deleteLoadBalancerListener($setter);
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test Providor for DeleteLoadBalancerListener
+     * @return array The list of Test Parameters
+     */
+    function getProvidorDeleteLoadBalancerListener() {
+        return [
+            'http' => [80],
+            'tcp' => [22],
+        ];
     }
 
     /**
      * Test for testDeleteLoadBalancer
-     * @dataProvider getProvidorDeleteLoadBalancer
-     * @param array $setter Request Set Value
-     * @param integer $httpPort Request Value
-     * @param integer $tcpPort Request Value
      */
-    public function testDeleteLoadBalancer($setter = [], $httpPort, $tcpPort) {
-        $loadbalancer_id = $this->setSlbClient()->target->describeLoadBalancer($setter)['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
+    public function testDeleteLoadBalancer() {
+        $loadbalancer_id = $this->target->describeLoadBalancer()['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
         $this->assertInternalType("string", $loadbalancer_id);
-        //httplistener
-        $http_setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $httpPort];
-        $actual = $this->target->deleteLoadBalancerListener($http_setter);
-        $this->assertInternalType("array", $actual);
-        //httplistener
-        $tcp_setter = ['LoadBalancerId' => $loadbalancer_id, 'ListenerPort' => $tcpPort];
-        $actual = $this->target->deleteLoadBalancerListener($tcp_setter);
-        $this->assertInternalType("array", $actual);
-        //loadbalancer
         $setter = ['LoadBalancerId' => $loadbalancer_id];
         $actual = $this->target->deleteLoadBalancer($setter);
         $this->assertInternalType("array", $actual);
-    }
-
-    /**
-     * Test Providor for DeleteLoadBalancer
-     * @return array The list of Test Parameters
-     */
-    function getProvidorDeleteLoadBalancer() {
-        return [
-            'success' => [[], 80, 20],
-        ];
-    }
-
-    function setSlbClient() {
-        $this->target->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
-        return $this;
     }
 
 }

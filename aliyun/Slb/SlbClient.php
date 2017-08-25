@@ -19,8 +19,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function createLoadBalancer(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\CreateLoadBalancerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\CreateLoadBalancerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -31,8 +30,18 @@ class SlbClient extends Client {
      * @return array result
      */
     function describeLoadBalancer(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'GET'];
-        $result = $this->executeClient(new Slb\DescribeLoadBalancersRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\DescribeLoadBalancersRequest(), $setter+Client::METHOD['GET'], $time);
+        return $result;
+    }
+
+    /**
+     * describe ServerLoadBalancerAttribute
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeLoadBalancerAttribute(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Slb\DescribeLoadBalancerAttributeRequest(), $setter+Client::METHOD['GET'], $time);
         return $result;
     }
 
@@ -43,8 +52,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function setLoadBalancerStatus(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\SetLoadBalancerStatusRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\SetLoadBalancerStatusRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -55,8 +63,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function createLoadBalancerHTTPListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -67,8 +74,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function createLoadBalancerHTTPSListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPSListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\CreateLoadBalancerHTTPSListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -80,7 +86,7 @@ class SlbClient extends Client {
      */
     function createLoadBalancerTCPListener(array $setter = [], $time = 0) {
         $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\CreateLoadBalancerTCPListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\CreateLoadBalancerTCPListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -92,7 +98,7 @@ class SlbClient extends Client {
      */
     function createLoadBalancerUDPListener(array $setter = [], $time = 0) {
         $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\CreateLoadBalancerUDPListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\CreateLoadBalancerUDPListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -103,8 +109,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function startLoadBalancerListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\StartLoadBalancerListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\StartLoadBalancerListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -115,8 +120,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function stopLoadBalancerListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\StopLoadBalancerListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\StopLoadBalancerListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -127,8 +131,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function deleteLoadBalancerListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\DeleteLoadBalancerListenerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\DeleteLoadBalancerListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -139,8 +142,7 @@ class SlbClient extends Client {
      * @return array result
      */
     function deleteLoadBalancer(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
-        $result = $this->executeClient(new Slb\DeleteLoadBalancerRequest(), $setter, $time);
+        $result = $this->executeClient(new Slb\DeleteLoadBalancerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 

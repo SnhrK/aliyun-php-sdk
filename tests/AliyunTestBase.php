@@ -16,6 +16,11 @@ abstract class AliyunTestBase extends TestCase {
     const TEST_ZONE = "ap-northeast-1a";
 
     /**
+     * The id for test
+     */
+    const TEST_ID = "aliyun-sdk-test";
+
+    /**
      * Instance object of test target class
      */
     protected $target;
