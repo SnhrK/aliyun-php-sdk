@@ -76,6 +76,7 @@ class EcsClientTest extends AliyunTestBase {
      * Test for testAuthorizeSecurityGroup
      * AuthorizeSecurityGroup, AuthorizeSecurityGroupEgress
      * @dataProvider getProvidorAuthorizeSecurityGroup
+     * @param array $setter Request value
      */
     public function testAuthorizeSecurityGroup($setter) {
         $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
@@ -115,6 +116,7 @@ class EcsClientTest extends AliyunTestBase {
      * Test for testRevokeSecurityGroup
      * RevokeSecurityGroup, RevokeSecurityGroupEgress
      * @dataProvider getProvidorRevokeSecurityGroup
+     * @param array $setter Request value
      */
     public function testRevokeSecurityGroup($setter) {
         $sg_id = $this->target->describeSecurityGroup()['SecurityGroups']['SecurityGroup'][0]['SecurityGroupId'];
