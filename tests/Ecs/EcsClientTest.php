@@ -157,9 +157,60 @@ class EcsClientTest extends AliyunTestBase {
     function getProvidorCreateInstance() {
         return [
             'success' => [
-                  ['InstanceName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic', 'SystemDiskCategory' => 'cloud_efficiency']
+                  ['InstanceName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic', 'SystemDiskCategory' => 'cloud_efficiency',
+                   'InternetMaxBandwidthOut' => 100]
             ],
         ];
+    }
+
+    /**
+     * Test for testDescribeInstance
+     * @param array $setter Request Value
+     */
+    public function testDescribeInstance() {
+        $actual = $this->target->describeInstance();
+        // var_dump($actual['Instances']['Instance'][0]);
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test for testAllocatePublicIp
+     * @param array $setter Request Value
+     */
+    public function testAllocatePublicIp() {
+        $instance_id = $this->target->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
+        $setter = ['InstanceId' => $instance_id];
+        $describe = ['InstanceIds' => json_encode([$instance_id])];
+        $actual = $this->target->allocatePublicIp($setter, $describe, 'Stopped');
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test for testStartInstance
+     * @param array $setter Request Value
+     */
+    public function testStartInstance() {
+        $instance_id = $this->target->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
+        $setter = ['InstanceId' => $instance_id];
+        $actual = $this->target->startInstance($setter);
+        $this->assertInternalType("array", $actual);
+    }
+
+    /**
+     * Test for testReleaseInstance
+     * @param array $setter Request Value
+     */
+    public function testReleaseInstance() {
+        $instance_id = $this->target->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
+        $setter = ['InstanceId' => $instance_id];
+        $describe = ['InstanceIds' => json_encode([$instance_id])];
+        $actual = $this->target->stopInstance($setter, 4);
+        $this->assertInternalType("array", $actual);
+        $actual = $this->target->deleteInstance($setter, $describe);
+        $this->assertInternalType("array", $actual);
     }
 
     /**

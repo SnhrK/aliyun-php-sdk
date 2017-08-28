@@ -65,13 +65,10 @@ class SlbClientTest extends AliyunTestBase {
      * @return array The list of Test Parameters
      */
     function getProvidorCreateLoadBalancerListener() {
+        $common_value = ['Bandwidth' => -1,'HealthCheckDomain' => '$_ip','HealthCheckURI' => '/index.html','HealthyThreshold' => 2,'UnhealthyThreshold' => 10,'HealthCheckInterval' => 10,'HealthCheckHttpCode' => 'http_2xx'];
         return [
-            'http' => [['ListenerPort' => 80, 'BackendServerPort' => 80, 'Bandwidth' => -1, 'StickySession' => 'off', 'HealthCheck' => 'on', 'HealthCheckDomain' => '$_ip', 'HealthCheckURI' => '/index.html',
-                'HealthCheckConnectPort' => 80, 'HealthyThreshold' => 2, 'UnhealthyThreshold' => 10, 'HealthCheckTimeout' => 5, 'HealthCheckInterval' => 10, 'HealthCheckHttpCode' => 'http_2xx'
-            ]],
-            'tcp' => [['ListenerPort' => 22, 'BackendServerPort' => 22, 'Bandwidth' => -1, 'HealthCheckDomain' => '$_ip', 'HealthCheckURI' => '/index.html', 'HealthCheckConnectPort' => 22,
-                'HealthyThreshold' => 2, 'UnhealthyThreshold' => 10, 'HealthCheckInterval' => 10, 'HealthCheckHttpCode' => 'http_2xx'
-            ]],
+            'http' => [$common_value+['ListenerPort' => 80, 'BackendServerPort' => 80, 'StickySession' => 'off', 'HealthCheck' => 'on', 'HealthCheckConnectPort' => 80, 'HealthCheckTimeout' => 5]],
+            'tcp' => [$common_value+['ListenerPort' => 22, 'BackendServerPort' => 22, 'HealthCheckConnectPort' => 22]],
         ];
     }
 

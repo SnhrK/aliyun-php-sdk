@@ -85,7 +85,6 @@ class SlbClient extends Client {
      * @return array result
      */
     function createLoadBalancerTCPListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerTCPListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
@@ -97,7 +96,6 @@ class SlbClient extends Client {
      * @return array result
      */
     function createLoadBalancerUDPListener(array $setter = [], $time = 0) {
-        $setter += ['Method' => 'POST'];
         $result = $this->executeClient(new Slb\CreateLoadBalancerUDPListenerRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }

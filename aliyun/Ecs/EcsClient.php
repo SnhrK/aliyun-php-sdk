@@ -227,13 +227,37 @@ class EcsClient extends Client {
     }
 
     /**
+     *  describe Instance
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeInstance(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ecs\DescribeInstancesRequest(), $setter+Client::METHOD['GET'], $time);
+        return $result;
+    }
+
+    /**
+     *  delete Instance
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function deleteInstance(array $setter = [], $describe, $time = 0) {
+        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Client::METHOD['GET'], 'Stopped')
+            ->executeClient(new Ecs\DeleteInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        return $result;
+    }
+
+    /**
      * allocate PublicIp
      * @param array $setter Setter is options eg.[Method => GET];
      * @param integer $time Time to delay execution
      * @return array result
      */
-    function allocatePublicIp(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\AllocatePublicIpRequest(), $setter+Client::METHOD['POST'], $time);
+    function allocatePublicIp(array $setter = [], array $describe, $status, $time = 0) {
+        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Client::METHOD['GET'], $status)
+            ->executeClient(new Ecs\AllocatePublicIpAddressRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
@@ -245,6 +269,17 @@ class EcsClient extends Client {
      */
     function startInstance(array $setter = [], $time = 0) {
         $result = $this->executeClient(new Ecs\StartInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        return $result;
+    }
+
+    /**
+     * stop Instance
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function stopInstance(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ecs\StopInstanceRequest(), $setter+Client::METHOD['POST'], $time);
         return $result;
     }
 
