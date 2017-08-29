@@ -16,6 +16,21 @@ abstract class AliyunTestBase extends TestCase {
     const TEST_ZONE = "ap-northeast-1a";
 
     /**
+     * The id for test
+     */
+    const TEST_ID = "aliyun-sdk-test";
+
+    /**
+     * The imageid for test
+     */
+    const TEST_IMAGE_ID = "centos_7_03_64_40G_alibase_20170710.vhd";
+
+    /**
+     * The instancetype for test
+     */
+    const TEST_INSTANCE_TYPE = "ecs.n4.small";
+
+    /**
      * Instance object of test target class
      */
     protected $target;
@@ -23,6 +38,7 @@ abstract class AliyunTestBase extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->target = $this->getTargetInstance();
+        $this->target->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
     }
 
     /**

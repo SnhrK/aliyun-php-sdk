@@ -12,7 +12,7 @@ use Aliyun\Ecs\EcsClient;
 $this->ecs = new EcsClient();
 $result = $this->ecs
     ->setClient("cn-hangzhou", "<your accessKey>", "<your accessSecret>")
-    ->describeRegion(['Method' => 'GET']);
+    ->describeRegion([]);
 print_r($result);
 ```
 
