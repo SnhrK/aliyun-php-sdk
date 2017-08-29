@@ -25,7 +25,7 @@ class EssClientTest extends AliyunTestBase {
     }
     /**
      * Test for testCreateScalingGroup
-     * @dataProvidor getProvidorCreateScalingGroup
+     * @dataProvider getProviderCreateScalingGroup
      * @param array $setter Request value
      */
     public function testCreateScalingGroup($setter) {
@@ -42,9 +42,9 @@ class EssClientTest extends AliyunTestBase {
      * Test Providor for CreateScalingGroup
      * @return array The list of Test Parameters
      */
-    function getProvidorCreateScalingGroup() {
+    function getProviderCreateScalingGroup() {
         return [
-            'success'   => [['MaxSize' => 1, 'MinSize' => 1, 'ScalingGroupName' => self::TEST_ID, 'DefaultCooldown' => 360]],
+            'success' => [['MaxSize' => 2, 'MinSize' => 1, 'ScalingGroupName' => self::TEST_ID, 'DefaultCooldown' => 360]],
         ];
     }
 
@@ -58,7 +58,7 @@ class EssClientTest extends AliyunTestBase {
 
     /**
      * Test for testCreateScalingConfiguration
-     * @dataProvider getProvidorCreateScalingConfiguration
+     * @dataProvider getProviderCreateScalingConfiguration
      * @param array $setter Request value
      */
     public function testCreateScalingConfiguration($setter) {
@@ -72,12 +72,21 @@ class EssClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for CreateScalingConfiguration
+     * Test Provider for CreateScalingConfiguration
      * @return array The list of Test Parameters
      */
-    function getProvidorCreateScalingConfiguration() {
+    function getProviderCreateScalingConfiguration() {
         return [
-            'success' => [['ScalingConfigurationName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic','InternetMaxBandwidthOut' => 100, 'IoOptimized' => 'optimized']],
+            'success' => [
+                ['ScalingConfigurationName' => self::TEST_ID,
+                  // 'ImageId' => self::TEST_IMAGE_ID,
+                  'ImageId' => 'm-6wehv9dxc6s6i5bmxixi',
+                  'InstanceType' => self::TEST_INSTANCE_TYPE,
+                  'InternetChargeType' => 'PayByTraffic',
+                  'InternetMaxBandwidthOut' => 100,
+                  'IoOptimized' => 'optimized'
+                ]
+            ],
         ];
     }
 
@@ -87,7 +96,7 @@ class EssClientTest extends AliyunTestBase {
     public function testDescribeScalingConfigrations() {
         $actual = $this->target->describeScalingConfigrations();
         $this->assertInternalType("array", $actual);
-        var_dump($actual['ScalingConfigurations']['ScalingConfiguration'][0]);
+        // var_dump($actual['ScalingConfigurations']['ScalingConfiguration']);
     }
 
     /**
@@ -107,7 +116,7 @@ class EssClientTest extends AliyunTestBase {
 
     /**
      * Test for testCreateScalingRule
-     * @dataProvider getProvidorCreateScalingRule
+     * @dataProvider getProviderCreateScalingRule
      * @param array $setter Request value
      */
     public function testCreateScalingRule($setter) {
@@ -119,16 +128,52 @@ class EssClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for CreateScalingRule
+     * Test Provider for CreateScalingRule
      * @return array The list of Test Parameters
      */
-    function getProvidorCreateScalingRule() {
+    function getProviderCreateScalingRule() {
         $rulename = self::TEST_ID;
         return [
             'up' => [['ScalingRuleName' => $rulename. '-up', 'AdjustmentType' => 'QuantityChangeInCapacity', 'AdjustmentValue' => 1, 'Cooldown' => 60]],
             'down' => [['ScalingRuleName' => $rulename. '-down', 'AdjustmentType' => 'QuantityChangeInCapacity', 'AdjustmentValue' => -1, 'Cooldown' => 60]],
         ];
     }
+
+    /**
+     * Test for testDescribeScalingRule
+     */
+    public function testDescribeScalingRule() {
+        $actual = $this->target->describeScalingRule();
+        $this->assertInternalType("array", $actual);
+        // var_dump($actual);
+    }
+
+    /**
+     * Test for testDescribeScalingActivity
+     */
+    public function testDescribeScalingActivity() {
+        $scalinggroup_id = $this->target->describeScalingGroup()['ScalingGroups']['ScalingGroup'][0]['ScalingGroupId'];
+        $this->assertInternalType("string", $scalinggroup_id);
+        $setter = ['ScalingGroupId' => $scalinggroup_id];
+        $actual = $this->target->describeScalingActivity($setter);
+        $this->assertInternalType("array", $actual);
+        // var_dump($actual['ScalingActivities']);
+    }
+
+    /**
+     * Test for testAttachInstnace
+     */
+    public function testAttachInstnace() {
+        $scalinggroup_id = $this->target->describeScalingGroup()['ScalingGroups']['ScalingGroup'][0]['ScalingGroupId'];
+        $this->assertInternalType("string", $scalinggroup_id);
+        $instance_id = $this->ecs->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
+        $setter = ['ScalingGroupId' => $scalinggroup_id, 'InstanceId1' => $instance_id];
+        $actual = $this->target->attachInstance($setter);
+        $this->assertInternalType("array", $actual);
+        // var_dump($actual['ScalingActivities']);
+    }
+
 
 
 

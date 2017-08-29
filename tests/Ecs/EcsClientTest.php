@@ -75,7 +75,7 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testAuthorizeSecurityGroup
      * AuthorizeSecurityGroup, AuthorizeSecurityGroupEgress
-     * @dataProvider getProvidorAuthorizeSecurityGroup
+     * @dataProvider getProviderAuthorizeSecurityGroup
      * @param array $setter Request value
      */
     public function testAuthorizeSecurityGroup($setter) {
@@ -91,10 +91,10 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for AuthorizeSecurityGroup
+     * Test Provider for AuthorizeSecurityGroup
      * @return array The list of Test Parameters
      */
-    function getProvidorAuthorizeSecurityGroup() {
+    function getProviderAuthorizeSecurityGroup() {
         return [
             'ingress/tcp'   => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0']],
             'ingress/icmp'  => [['NicType' => 'intranet', 'IpProtocol' => 'icmp', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '10', 'SourceCidrIp' => '0.0.0.0/0']],
@@ -135,7 +135,7 @@ class EcsClientTest extends AliyunTestBase {
 
     /**
      * Test for testCreateInstance
-     * @dataProvider getProvidorCreateInstance
+     * @dataProvider getProviderCreateInstance
      * @param array $setter Request Value
      */
     public function testCreateInstance($setter) {
@@ -151,10 +151,10 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for CreateInstance
+     * Test Provider for CreateInstance
      * @return array The list of Test Parameters
      */
-    function getProvidorCreateInstance() {
+    function getProviderCreateInstance() {
         return [
             'success' => [
                   ['InstanceName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic', 'SystemDiskCategory' => 'cloud_efficiency',
@@ -225,7 +225,7 @@ class EcsClientTest extends AliyunTestBase {
     /**
      * Test for testRevokeSecurityGroup
      * RevokeSecurityGroup, RevokeSecurityGroupEgress
-     * @dataProvider getProvidorRevokeSecurityGroup
+     * @dataProvider getProviderRevokeSecurityGroup
      * @param array $setter Request value
      */
     public function testRevokeSecurityGroup($setter) {
@@ -241,10 +241,10 @@ class EcsClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for RevokeSecurityGroup
+     * Test Provider for RevokeSecurityGroup
      * @return array The list of Test Parameters
      */
-    function getProvidorRevokeSecurityGroup() {
+    function getProviderRevokeSecurityGroup() {
         return [
             'ingress/tcp'   => [['IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0']],
             'ingress/icmp'  => [['IpProtocol' => 'icmp', 'PortRange' => '-1/-1', 'SourceCidrIp' => '0.0.0.0/0']],

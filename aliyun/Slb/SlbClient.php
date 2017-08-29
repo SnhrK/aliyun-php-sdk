@@ -144,4 +144,15 @@ class SlbClient extends Client {
         return $result;
     }
 
+    /**
+     * Add BackendServers
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function addBackendServer(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Slb\AddBackendServersRequest(), $setter+Client::METHOD['POST'], $time);
+        return $result;
+    }
+
 }

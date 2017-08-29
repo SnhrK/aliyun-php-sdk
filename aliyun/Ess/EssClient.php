@@ -77,4 +77,38 @@ class EssClient extends Client {
         $result = $this->executeClient(new Ess\DescribeScalingConfigurationsRequest(), $setter+Client::METHOD['GET'], $time);
         return $result;
     }
+
+    /**
+     * describe ScalingRule
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeScalingRule(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ess\DescribeScalingRulesRequest(), $setter+Client::METHOD['GET'], $time);
+        return $result;
+    }
+
+    /**
+     * describe ScalingActivity
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeScalingActivity(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ess\DescribeScalingActivitiesRequest(), $setter+Client::METHOD['GET'], $time);
+        return $result;
+    }
+
+    /**
+     * attach Instance
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function attachInstance(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ess\AttachInstancesRequest(), $setter+Client::METHOD['POST'], $time);
+        return $result;
+    }
+
 }

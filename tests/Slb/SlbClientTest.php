@@ -2,6 +2,7 @@
 namespace AliyunTest\Slb;
 use AliyunTest\AliyunTestBase;
 use Aliyun\Slb\SlbClient;
+// use Aliyun\Ecs\EcsClient;
 
 class SlbClientTest extends AliyunTestBase {
     /**
@@ -11,7 +12,14 @@ class SlbClientTest extends AliyunTestBase {
     protected function getTargetInstance() {
         return new SlbClient();
     }
-
+    /**
+     * @override
+     */
+    public function setUp() {
+        parent::setUp();
+        $this->ecs = new EcsClient();
+        $this->ecs->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
+    }
     /**
      * Test for testCreateLoadBalancer
      */
@@ -38,7 +46,7 @@ class SlbClientTest extends AliyunTestBase {
     /**
      * Test for testCreateLoadBalancerListener
      * testCreateLoadBalancerHTTPListener, testCreateLoadBalancerTCPListener
-     * @dataProvider getProvidorCreateLoadBalancerListener
+     * @dataProvider getProviderCreateLoadBalancerListener
      * @param array $setter Request Value
      */
     public function testCreateLoadBalancerListener($setter) {
@@ -61,10 +69,10 @@ class SlbClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for CreateLoadBalancerListener
+     * Test Provider for CreateLoadBalancerListener
      * @return array The list of Test Parameters
      */
-    function getProvidorCreateLoadBalancerListener() {
+    function getProviderCreateLoadBalancerListener() {
         $common_value = ['Bandwidth' => -1,'HealthCheckDomain' => '$_ip','HealthCheckURI' => '/index.html','HealthyThreshold' => 2,'UnhealthyThreshold' => 10,'HealthCheckInterval' => 10,'HealthCheckHttpCode' => 'http_2xx'];
         return [
             'http' => [$common_value+['ListenerPort' => 80, 'BackendServerPort' => 80, 'StickySession' => 'off', 'HealthCheck' => 'on', 'HealthCheckConnectPort' => 80, 'HealthCheckTimeout' => 5]],
@@ -85,7 +93,7 @@ class SlbClientTest extends AliyunTestBase {
 
     /**
      * Test for testDeleteLoadBalancerListener
-     * @dataProvider getProvidorDeleteLoadBalancerListener
+     * @dataProvider getProviderDeleteLoadBalancerListener
      * @param integer $httpPort Request Value
      */
     public function testDeleteLoadBalancerListener($port) {
@@ -97,10 +105,10 @@ class SlbClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test Providor for DeleteLoadBalancerListener
+     * Test Provider for DeleteLoadBalancerListener
      * @return array The list of Test Parameters
      */
-    function getProvidorDeleteLoadBalancerListener() {
+    function getProviderDeleteLoadBalancerListener() {
         return [
             'http' => [80],
             'tcp' => [22],
@@ -108,13 +116,17 @@ class SlbClientTest extends AliyunTestBase {
     }
 
     /**
-     * Test for testDeleteLoadBalancer
+     * Test for testAddBackendServer
      */
-    public function testDeleteLoadBalancer() {
+    public function testAddBackendServer() {
+        $instance_id = $this->ecs->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
         $loadbalancer_id = $this->target->describeLoadBalancer()['LoadBalancers']['LoadBalancer'][0]['LoadBalancerId'];
         $this->assertInternalType("string", $loadbalancer_id);
-        $setter = ['LoadBalancerId' => $loadbalancer_id];
-        $actual = $this->target->deleteLoadBalancer($setter);
+        $setter = ['LoadBalancerId' => $loadbalancer_id,
+            'BackendServers' => '['. json_encode(['ServerId' => $instance_id, 'Weight' => 100]) . ']'
+        ];
+        $actual = $this->target->addBackendServer($setter);
         $this->assertInternalType("array", $actual);
     }
 
