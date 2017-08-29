@@ -149,7 +149,7 @@ class DescribeScalingGroupsRequest extends \RpcAcsRequest
 
   public function setPageNumber($pageNumber) {
 		$this->pageNumber = $pageNumber;
-		$this->queryParameters["pageNumber"]=$pageNumber;
+		$this->queryParameters["PageNumber"]=$pageNumber;
 	}
 
   public function getPageSize() {
@@ -158,7 +158,7 @@ class DescribeScalingGroupsRequest extends \RpcAcsRequest
 
   public function setPageSize($pageSize) {
 		$this->pageSize = $pageSize;
-		$this->queryParameters["pageSize"]=$pageSize;
+		$this->queryParameters["PageSize"]=$pageSize;
 	}
 
   public function getScalingGroupId1() {
