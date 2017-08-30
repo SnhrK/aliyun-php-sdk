@@ -1,6 +1,7 @@
 <?php
 namespace Aliyun\Ess;
 use Aliyun\Common\Client\Client;
+use Aliyun\Common\Client\Method;
 use Aliyun\Common\Client\Traits\ClientTrait;
 use Ess\Request\V20140828 as Ess;
 /**
@@ -19,7 +20,7 @@ class EssClient extends Client {
      * @return array result
      */
     function createScalingGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\CreateScalingGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ess\CreateScalingGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -30,7 +31,7 @@ class EssClient extends Client {
      * @return array result
      */
     function describeScalingGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\DescribeScalingGroupsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ess\DescribeScalingGroupsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -41,7 +42,7 @@ class EssClient extends Client {
      * @return array result
      */
     function createScalingConfiguration(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\CreateScalingConfigurationRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ess\CreateScalingConfigurationRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -52,7 +53,7 @@ class EssClient extends Client {
      * @return array result
      */
     function enableScalingGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\EnableScalingGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ess\EnableScalingGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -63,7 +64,7 @@ class EssClient extends Client {
      * @return array result
      */
     function createScalingRule(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\CreateScalingRuleRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ess\CreateScalingRuleRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -74,7 +75,7 @@ class EssClient extends Client {
      * @return array result
      */
     function describeScalingConfigrations(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\DescribeScalingConfigurationsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ess\DescribeScalingConfigurationsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -85,7 +86,7 @@ class EssClient extends Client {
      * @return array result
      */
     function describeScalingRule(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\DescribeScalingRulesRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ess\DescribeScalingRulesRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -96,7 +97,7 @@ class EssClient extends Client {
      * @return array result
      */
     function describeScalingActivity(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\DescribeScalingActivitiesRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ess\DescribeScalingActivitiesRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -107,7 +108,7 @@ class EssClient extends Client {
      * @return array result
      */
     function attachInstance(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ess\AttachInstancesRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ess\AttachInstancesRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
