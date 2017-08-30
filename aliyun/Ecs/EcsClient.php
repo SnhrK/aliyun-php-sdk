@@ -1,6 +1,7 @@
 <?php
 namespace Aliyun\Ecs;
 use Aliyun\Common\Client\Client;
+use Aliyun\Common\Client\Method;
 use Aliyun\Common\Client\Traits\ClientTrait;
 use Ecs\Request\V20140526 as Ecs;
 /**
@@ -19,7 +20,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeRegion(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeRegionsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeRegionsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -30,7 +31,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function createVpc(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\CreateVpcRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\CreateVpcRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -41,7 +42,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeVpc(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeVpcsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeVpcsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -52,8 +53,8 @@ class EcsClient extends Client {
      * @return array result
      */
     function deleteVpc(array $setter = [], $time = 0) {
-        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), $setter+Client::METHOD['GET'], 'Available')
-            ->executeClient(new Ecs\DeleteVpcRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), $setter+Method::GET, 'Available')
+            ->executeClient(new Ecs\DeleteVpcRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -64,9 +65,8 @@ class EcsClient extends Client {
      * @return $this
      */
     function createVSwitch(array $setter = [], $time = 0) {
-        $describe = ['VpcId' => $setter['VpcId']]+Client::METHOD['GET'];
-        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), $describe, 'Available')
-            ->executeClient(new Ecs\CreateVSwitchRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->retryExecuteClient(new Ecs\DescribeVpcsRequest(), ['VpcId' => $setter['VpcId']]+Method::GET, 'Available')
+            ->executeClient(new Ecs\CreateVSwitchRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -77,8 +77,8 @@ class EcsClient extends Client {
      * @return $this
      */
     function deleteVSwitch(array $setter = [], $time = 0) {
-        $result = $this->retryExecuteClient(new Ecs\DescribeVSwitchesRequest(), $setter+Client::METHOD['GET'], 'Available')
-            ->executeClient(new Ecs\DeleteVSwitchRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->retryExecuteClient(new Ecs\DescribeVSwitchesRequest(), $setter+Method::GET, 'Available')
+            ->executeClient(new Ecs\DeleteVSwitchRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -89,7 +89,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeVSwitch(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeVSwitchesRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeVSwitchesRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -100,7 +100,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function createSecurityGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\CreateSecurityGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\CreateSecurityGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -111,7 +111,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeSecurityGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeSecurityGroupsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeSecurityGroupsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -122,7 +122,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function deleteSecurityGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DeleteSecurityGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\DeleteSecurityGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -133,7 +133,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function authorizeSecurityGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\AuthorizeSecurityGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\AuthorizeSecurityGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -144,7 +144,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function authorizeSecurityGroupEgress(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\AuthorizeSecurityGroupEgressRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\AuthorizeSecurityGroupEgressRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -155,7 +155,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeSecurityGroupAttribute(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeSecurityGroupAttributeRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeSecurityGroupAttributeRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -166,7 +166,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function revokeSecurityGroup(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\RevokeSecurityGroupRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\RevokeSecurityGroupRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -177,7 +177,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function revokeSecurityGroupEgress(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\RevokeSecurityGroupEgressRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\RevokeSecurityGroupEgressRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -189,7 +189,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function createKeypair(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\CreateKeypairRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\CreateKeypairRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -200,7 +200,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeKeypair(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeKeyPairsRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeKeyPairsRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -211,7 +211,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function deleteKeypair(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DeleteKeyPairsRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\DeleteKeyPairsRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -222,7 +222,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function createInstance(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\CreateInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\CreateInstanceRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -233,7 +233,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function describeInstance(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\DescribeInstancesRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Ecs\DescribeInstancesRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -244,8 +244,8 @@ class EcsClient extends Client {
      * @return array result
      */
     function deleteInstance(array $setter = [], $describe, $time = 0) {
-        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Client::METHOD['GET'], 'Stopped')
-            ->executeClient(new Ecs\DeleteInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Method::GET, 'Stopped')
+            ->executeClient(new Ecs\DeleteInstanceRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -256,8 +256,8 @@ class EcsClient extends Client {
      * @return array result
      */
     function allocatePublicIp(array $setter = [], array $describe, $status, $time = 0) {
-        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Client::METHOD['GET'], $status)
-            ->executeClient(new Ecs\AllocatePublicIpAddressRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->retryExecuteClient(new Ecs\DescribeInstancesRequest(), $describe+Method::GET, $status)
+            ->executeClient(new Ecs\AllocatePublicIpAddressRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -268,7 +268,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function startInstance(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\StartInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\StartInstanceRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -279,7 +279,7 @@ class EcsClient extends Client {
      * @return array result
      */
     function stopInstance(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Ecs\StopInstanceRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Ecs\StopInstanceRequest(), $setter+Method::POST, $time);
         return $result;
     }
 

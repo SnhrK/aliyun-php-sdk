@@ -1,6 +1,7 @@
 <?php
 namespace Aliyun\Cms;
 use Aliyun\Common\Client\Client;
+use Aliyun\Common\Client\Method;
 use Aliyun\Common\Client\Traits\ClientTrait;
 use Cms\Request\V20170301 as Cms;
 /**
@@ -19,7 +20,7 @@ class CmsClient extends Client {
      * @return array result
      */
     function createAlarm(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Cms\CreateAlarmRequest(), $setter+Client::METHOD['POST'], $time);
+        $result = $this->executeClient(new Cms\CreateAlarmRequest(), $setter+Method::POST, $time);
         return $result;
     }
 
@@ -30,7 +31,7 @@ class CmsClient extends Client {
      * @return array result
      */
     function listAlarm(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Cms\ListAlarmRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Cms\ListAlarmRequest(), $setter+Method::GET, $time);
         return $result;
     }
 
@@ -41,7 +42,7 @@ class CmsClient extends Client {
      * @return array result
      */
     function listAlarmHistory(array $setter = [], $time = 0) {
-        $result = $this->executeClient(new Cms\listAlarmHistoryRequest(), $setter+Client::METHOD['GET'], $time);
+        $result = $this->executeClient(new Cms\listAlarmHistoryRequest(), $setter+Method::GET, $time);
         return $result;
     }
 }
