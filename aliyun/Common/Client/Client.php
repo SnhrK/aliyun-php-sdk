@@ -7,16 +7,6 @@ use Aliyun\Common\Autoload\Autoload;
  */
 class Client {
     /**
-     * Argument of method of aliyun
-     * @var array
-     */
-    const METHOD = [
-        'GET'     => ['Method' => 'GET'],
-        'POST'    => ['Method' => 'POST'],
-        'DELETE'  => ['Method' => 'DELETE'],
-        'PUT'     => ['Method' => 'PUT']
-    ];
-    /**
      * Constructs a client
      */
     public function __construct() {
