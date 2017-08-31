@@ -24,6 +24,7 @@ class DescribeLiveStreamTranscodeInfoRequest extends \RpcAcsRequest
 	function  __construct()
 	{
 		parent::__construct("live", "2016-11-01", "DescribeLiveStreamTranscodeInfo");
+		$this->setMethod("POST");
 	}
 
 	private  $securityToken;

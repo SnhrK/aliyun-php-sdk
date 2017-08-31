@@ -24,47 +24,30 @@ class AddLiveAppRecordConfigRequest extends \RpcAcsRequest
 	function  __construct()
 	{
 		parent::__construct("live", "2016-11-01", "AddLiveAppRecordConfig");
+		$this->setMethod("POST");
 	}
-
-	private  $securityToken;
-
-	private  $ownerId;
-
-	private  $domainName;
-
-	private  $appName;
-
-	private  $ossEndpoint;
 
 	private  $ossBucket;
 
+	private  $appName;
+
+	private  $securityToken;
+
 	private  $RecordFormats;
 
-	public function getSecurityToken() {
-		return $this->securityToken;
+	private  $domainName;
+
+	private  $ossEndpoint;
+
+	private  $ownerId;
+
+	public function getOssBucket() {
+		return $this->ossBucket;
 	}
 
-	public function setSecurityToken($securityToken) {
-		$this->securityToken = $securityToken;
-		$this->queryParameters["SecurityToken"]=$securityToken;
-	}
-
-	public function getOwnerId() {
-		return $this->ownerId;
-	}
-
-	public function setOwnerId($ownerId) {
-		$this->ownerId = $ownerId;
-		$this->queryParameters["OwnerId"]=$ownerId;
-	}
-
-	public function getDomainName() {
-		return $this->domainName;
-	}
-
-	public function setDomainName($domainName) {
-		$this->domainName = $domainName;
-		$this->queryParameters["DomainName"]=$domainName;
+	public function setOssBucket($ossBucket) {
+		$this->ossBucket = $ossBucket;
+		$this->queryParameters["OssBucket"]=$ossBucket;
 	}
 
 	public function getAppName() {
@@ -76,22 +59,13 @@ class AddLiveAppRecordConfigRequest extends \RpcAcsRequest
 		$this->queryParameters["AppName"]=$appName;
 	}
 
-	public function getOssEndpoint() {
-		return $this->ossEndpoint;
+	public function getSecurityToken() {
+		return $this->securityToken;
 	}
 
-	public function setOssEndpoint($ossEndpoint) {
-		$this->ossEndpoint = $ossEndpoint;
-		$this->queryParameters["OssEndpoint"]=$ossEndpoint;
-	}
-
-	public function getOssBucket() {
-		return $this->ossBucket;
-	}
-
-	public function setOssBucket($ossBucket) {
-		$this->ossBucket = $ossBucket;
-		$this->queryParameters["OssBucket"]=$ossBucket;
+	public function setSecurityToken($securityToken) {
+		$this->securityToken = $securityToken;
+		$this->queryParameters["SecurityToken"]=$securityToken;
 	}
 
 	public function getRecordFormats() {
@@ -107,6 +81,33 @@ class AddLiveAppRecordConfigRequest extends \RpcAcsRequest
 			$this->queryParameters['RecordFormat.' . ($i + 1) . '.CycleDuration'] = $RecordFormats[$i]['CycleDuration'];
 
 		}
+	}
+
+	public function getDomainName() {
+		return $this->domainName;
+	}
+
+	public function setDomainName($domainName) {
+		$this->domainName = $domainName;
+		$this->queryParameters["DomainName"]=$domainName;
+	}
+
+	public function getOssEndpoint() {
+		return $this->ossEndpoint;
+	}
+
+	public function setOssEndpoint($ossEndpoint) {
+		$this->ossEndpoint = $ossEndpoint;
+		$this->queryParameters["OssEndpoint"]=$ossEndpoint;
+	}
+
+	public function getOwnerId() {
+		return $this->ownerId;
+	}
+
+	public function setOwnerId($ownerId) {
+		$this->ownerId = $ownerId;
+		$this->queryParameters["OwnerId"]=$ownerId;
 	}
 	
 }
