@@ -9,10 +9,9 @@ Alibaba Cloud SDK for PHP https://github.com/aliyun/aliyun-openapi-php-sdk
 ```php
 use Aliyun\Ecs\EcsClient;
 
-$this->ecs = new EcsClient();
-$result = $this->ecs
-    ->setClient("cn-hangzhou", "<your accessKey>", "<your accessSecret>")
-    ->describeRegion([]);
+$this->ecs = new EcsClient()
+    ->setProfile("cn-hangzhou", "<your accessKey>", "<your accessSecret>")->build();
+$result = $this->ecs->describeRegion();
 print_r($result);
 ```
 
