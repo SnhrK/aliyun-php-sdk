@@ -24,27 +24,61 @@ class DescribeUserDomainsRequest extends \RpcAcsRequest
 	function  __construct()
 	{
 		parent::__construct("Cdn", "2014-11-11", "DescribeUserDomains");
+		$this->setMethod("POST");
 	}
+
+	private  $funcFilter;
+
+	private  $sources;
+
+	private  $domainName;
 
 	private  $ownerId;
 
-	private  $securityToken;
-
-	private  $pageSize;
+	private  $funcId;
 
 	private  $pageNumber;
-
-	private  $domainName;
 
 	private  $domainStatus;
 
 	private  $domainSearchType;
 
-	private  $sources;
+	private  $checkDomainShow;
+
+	private  $resourceGroupId;
+
+	private  $securityToken;
 
 	private  $cdnType;
 
-	private  $checkDomainShow;
+	private  $pageSize;
+
+	public function getFuncFilter() {
+		return $this->funcFilter;
+	}
+
+	public function setFuncFilter($funcFilter) {
+		$this->funcFilter = $funcFilter;
+		$this->queryParameters["FuncFilter"]=$funcFilter;
+	}
+
+	public function getSources() {
+		return $this->sources;
+	}
+
+	public function setSources($sources) {
+		$this->sources = $sources;
+		$this->queryParameters["Sources"]=$sources;
+	}
+
+	public function getDomainName() {
+		return $this->domainName;
+	}
+
+	public function setDomainName($domainName) {
+		$this->domainName = $domainName;
+		$this->queryParameters["DomainName"]=$domainName;
+	}
 
 	public function getOwnerId() {
 		return $this->ownerId;
@@ -55,22 +89,13 @@ class DescribeUserDomainsRequest extends \RpcAcsRequest
 		$this->queryParameters["OwnerId"]=$ownerId;
 	}
 
-	public function getSecurityToken() {
-		return $this->securityToken;
+	public function getFuncId() {
+		return $this->funcId;
 	}
 
-	public function setSecurityToken($securityToken) {
-		$this->securityToken = $securityToken;
-		$this->queryParameters["SecurityToken"]=$securityToken;
-	}
-
-	public function getPageSize() {
-		return $this->pageSize;
-	}
-
-	public function setPageSize($pageSize) {
-		$this->pageSize = $pageSize;
-		$this->queryParameters["PageSize"]=$pageSize;
+	public function setFuncId($funcId) {
+		$this->funcId = $funcId;
+		$this->queryParameters["FuncId"]=$funcId;
 	}
 
 	public function getPageNumber() {
@@ -80,15 +105,6 @@ class DescribeUserDomainsRequest extends \RpcAcsRequest
 	public function setPageNumber($pageNumber) {
 		$this->pageNumber = $pageNumber;
 		$this->queryParameters["PageNumber"]=$pageNumber;
-	}
-
-	public function getDomainName() {
-		return $this->domainName;
-	}
-
-	public function setDomainName($domainName) {
-		$this->domainName = $domainName;
-		$this->queryParameters["DomainName"]=$domainName;
 	}
 
 	public function getDomainStatus() {
@@ -109,13 +125,31 @@ class DescribeUserDomainsRequest extends \RpcAcsRequest
 		$this->queryParameters["DomainSearchType"]=$domainSearchType;
 	}
 
-	public function getSources() {
-		return $this->sources;
+	public function getCheckDomainShow() {
+		return $this->checkDomainShow;
 	}
 
-	public function setSources($sources) {
-		$this->sources = $sources;
-		$this->queryParameters["Sources"]=$sources;
+	public function setCheckDomainShow($checkDomainShow) {
+		$this->checkDomainShow = $checkDomainShow;
+		$this->queryParameters["CheckDomainShow"]=$checkDomainShow;
+	}
+
+	public function getResourceGroupId() {
+		return $this->resourceGroupId;
+	}
+
+	public function setResourceGroupId($resourceGroupId) {
+		$this->resourceGroupId = $resourceGroupId;
+		$this->queryParameters["ResourceGroupId"]=$resourceGroupId;
+	}
+
+	public function getSecurityToken() {
+		return $this->securityToken;
+	}
+
+	public function setSecurityToken($securityToken) {
+		$this->securityToken = $securityToken;
+		$this->queryParameters["SecurityToken"]=$securityToken;
 	}
 
 	public function getCdnType() {
@@ -127,13 +161,13 @@ class DescribeUserDomainsRequest extends \RpcAcsRequest
 		$this->queryParameters["CdnType"]=$cdnType;
 	}
 
-	public function getCheckDomainShow() {
-		return $this->checkDomainShow;
+	public function getPageSize() {
+		return $this->pageSize;
 	}
 
-	public function setCheckDomainShow($checkDomainShow) {
-		$this->checkDomainShow = $checkDomainShow;
-		$this->queryParameters["CheckDomainShow"]=$checkDomainShow;
+	public function setPageSize($pageSize) {
+		$this->pageSize = $pageSize;
+		$this->queryParameters["PageSize"]=$pageSize;
 	}
 	
 }

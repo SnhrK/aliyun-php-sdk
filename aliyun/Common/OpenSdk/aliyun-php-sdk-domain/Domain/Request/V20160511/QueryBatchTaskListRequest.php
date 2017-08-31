@@ -24,37 +24,20 @@ class QueryBatchTaskListRequest extends \RpcAcsRequest
 	function  __construct()
 	{
 		parent::__construct("Domain", "2016-05-11", "QueryBatchTaskList");
+		$this->setMethod("POST");
 	}
-
-	private  $userClientIp;
-
-	private  $lang;
 
 	private  $beginCreateTime;
 
 	private  $endCreateTime;
 
-	private  $pageNum;
+	private  $userClientIp;
 
 	private  $pageSize;
 
-	public function getUserClientIp() {
-		return $this->userClientIp;
-	}
+	private  $lang;
 
-	public function setUserClientIp($userClientIp) {
-		$this->userClientIp = $userClientIp;
-		$this->queryParameters["UserClientIp"]=$userClientIp;
-	}
-
-	public function getLang() {
-		return $this->lang;
-	}
-
-	public function setLang($lang) {
-		$this->lang = $lang;
-		$this->queryParameters["Lang"]=$lang;
-	}
+	private  $pageNum;
 
 	public function getBeginCreateTime() {
 		return $this->beginCreateTime;
@@ -74,13 +57,13 @@ class QueryBatchTaskListRequest extends \RpcAcsRequest
 		$this->queryParameters["EndCreateTime"]=$endCreateTime;
 	}
 
-	public function getPageNum() {
-		return $this->pageNum;
+	public function getUserClientIp() {
+		return $this->userClientIp;
 	}
 
-	public function setPageNum($pageNum) {
-		$this->pageNum = $pageNum;
-		$this->queryParameters["PageNum"]=$pageNum;
+	public function setUserClientIp($userClientIp) {
+		$this->userClientIp = $userClientIp;
+		$this->queryParameters["UserClientIp"]=$userClientIp;
 	}
 
 	public function getPageSize() {
@@ -90,6 +73,24 @@ class QueryBatchTaskListRequest extends \RpcAcsRequest
 	public function setPageSize($pageSize) {
 		$this->pageSize = $pageSize;
 		$this->queryParameters["PageSize"]=$pageSize;
+	}
+
+	public function getLang() {
+		return $this->lang;
+	}
+
+	public function setLang($lang) {
+		$this->lang = $lang;
+		$this->queryParameters["Lang"]=$lang;
+	}
+
+	public function getPageNum() {
+		return $this->pageNum;
+	}
+
+	public function setPageNum($pageNum) {
+		$this->pageNum = $pageNum;
+		$this->queryParameters["PageNum"]=$pageNum;
 	}
 	
 }

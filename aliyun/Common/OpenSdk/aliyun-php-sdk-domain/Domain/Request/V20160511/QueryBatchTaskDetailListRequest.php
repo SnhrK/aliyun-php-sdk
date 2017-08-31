@@ -24,19 +24,42 @@ class QueryBatchTaskDetailListRequest extends \RpcAcsRequest
 	function  __construct()
 	{
 		parent::__construct("Domain", "2016-05-11", "QueryBatchTaskDetailList");
+		$this->setMethod("POST");
 	}
-
-	private  $userClientIp;
-
-	private  $lang;
-
-	private  $taskNo;
 
 	private  $taskStatus;
 
-	private  $pageNum;
+	private  $saleId;
+
+	private  $userClientIp;
+
+	private  $taskNo;
+
+	private  $domainName;
 
 	private  $pageSize;
+
+	private  $lang;
+
+	private  $pageNum;
+
+	public function getTaskStatus() {
+		return $this->taskStatus;
+	}
+
+	public function setTaskStatus($taskStatus) {
+		$this->taskStatus = $taskStatus;
+		$this->queryParameters["TaskStatus"]=$taskStatus;
+	}
+
+	public function getSaleId() {
+		return $this->saleId;
+	}
+
+	public function setSaleId($saleId) {
+		$this->saleId = $saleId;
+		$this->queryParameters["SaleId"]=$saleId;
+	}
 
 	public function getUserClientIp() {
 		return $this->userClientIp;
@@ -45,15 +68,6 @@ class QueryBatchTaskDetailListRequest extends \RpcAcsRequest
 	public function setUserClientIp($userClientIp) {
 		$this->userClientIp = $userClientIp;
 		$this->queryParameters["UserClientIp"]=$userClientIp;
-	}
-
-	public function getLang() {
-		return $this->lang;
-	}
-
-	public function setLang($lang) {
-		$this->lang = $lang;
-		$this->queryParameters["Lang"]=$lang;
 	}
 
 	public function getTaskNo() {
@@ -65,22 +79,13 @@ class QueryBatchTaskDetailListRequest extends \RpcAcsRequest
 		$this->queryParameters["TaskNo"]=$taskNo;
 	}
 
-	public function getTaskStatus() {
-		return $this->taskStatus;
+	public function getDomainName() {
+		return $this->domainName;
 	}
 
-	public function setTaskStatus($taskStatus) {
-		$this->taskStatus = $taskStatus;
-		$this->queryParameters["TaskStatus"]=$taskStatus;
-	}
-
-	public function getPageNum() {
-		return $this->pageNum;
-	}
-
-	public function setPageNum($pageNum) {
-		$this->pageNum = $pageNum;
-		$this->queryParameters["PageNum"]=$pageNum;
+	public function setDomainName($domainName) {
+		$this->domainName = $domainName;
+		$this->queryParameters["DomainName"]=$domainName;
 	}
 
 	public function getPageSize() {
@@ -90,6 +95,24 @@ class QueryBatchTaskDetailListRequest extends \RpcAcsRequest
 	public function setPageSize($pageSize) {
 		$this->pageSize = $pageSize;
 		$this->queryParameters["PageSize"]=$pageSize;
+	}
+
+	public function getLang() {
+		return $this->lang;
+	}
+
+	public function setLang($lang) {
+		$this->lang = $lang;
+		$this->queryParameters["Lang"]=$lang;
+	}
+
+	public function getPageNum() {
+		return $this->pageNum;
+	}
+
+	public function setPageNum($pageNum) {
+		$this->pageNum = $pageNum;
+		$this->queryParameters["PageNum"]=$pageNum;
 	}
 	
 }
