@@ -2,17 +2,12 @@
 namespace Aliyun\Ecs;
 use Aliyun\Common\Client\Client;
 use Aliyun\Common\Client\Method;
-use Aliyun\Common\Client\Traits\ClientTrait;
 use Ecs\Request\V20140526 as Ecs;
 /**
  * EcsClient Aliyun Ecs Client to '/OpenSdk/aliyun-php-sdk-ecs/Ecs/Request/20140526'
  * @package Aliyun\Ecs
  */
 class EcsClient extends Client {
-    /**
-     * Traits
-     */
-    use ClientTrait;
     /**
      * describe Regions
      * @param array $setter Setter is options eg.[Method => GET];

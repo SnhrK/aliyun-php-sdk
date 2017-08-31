@@ -2,17 +2,12 @@
 namespace Aliyun\Slb;
 use Aliyun\Common\Client\Client;
 use Aliyun\Common\Client\Method;
-use Aliyun\Common\Client\Traits\ClientTrait;
 use Slb\Request\V20140515 as Slb;
 /**
  * SlbClient Aliyun Slb Client to '/OpenSdk/aliyun-php-sdk-slb/Slb/Request/V20140515'
  * @package Aliyun\Slb
  */
 class SlbClient extends Client {
-    /**
-     * Traits
-     */
-    use ClientTrait;
     /**
      * create ServerLoadBalancer
      * @param array $setter Setter is options eg.[Method => GET];

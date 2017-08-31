@@ -2,17 +2,12 @@
 namespace Aliyun\Ess;
 use Aliyun\Common\Client\Client;
 use Aliyun\Common\Client\Method;
-use Aliyun\Common\Client\Traits\ClientTrait;
 use Ess\Request\V20140828 as Ess;
 /**
  * EssClient Aliyun Ess Client to '/OpenSdk/aliyun-php-sdk-ess/Ess/Request/V20140828'
  * @package Aliyun\Ess
  */
 class EssClient extends Client {
-    /**
-     * Traits
-     */
-    use ClientTrait;
     /**
      * create ScalingGroup
      * @param array $setter Setter is options eg.[Method => GET];
