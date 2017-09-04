@@ -18,7 +18,7 @@ class CmsClientTest extends AliyunTestBase {
     public function setUp() {
         parent::setUp();
         $this->ess = new EssClient();
-        $this->ess->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
+        $this->ess->setProfile(['region' => self::TEST_REGION, 'key' => $_SERVER['TEST_ALIYUN_ACCESS'], 'secret' => $_SERVER['TEST_ALIYUN_SECRET']])->build();
     }
 
     /**
