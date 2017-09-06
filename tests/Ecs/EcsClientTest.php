@@ -96,7 +96,8 @@ class EcsClientTest extends AliyunTestBase {
      */
     function getProviderAuthorizeSecurityGroup() {
         return [
-            'ingress/tcp'   => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '1', 'SourceCidrIp' => '0.0.0.0/0']],
+            'ingress/http'   => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '80/80','Policy' => 'accept', 'Priority' => '10', 'SourceCidrIp' => '0.0.0.0/0']],
+            'ingress/tcp'   => [['NicType' => 'intranet', 'IpProtocol' => 'tcp', 'PortRange' => '22/22','Policy' => 'accept', 'Priority' => '10', 'SourceCidrIp' => '0.0.0.0/0']],
             'ingress/icmp'  => [['NicType' => 'intranet', 'IpProtocol' => 'icmp', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '10', 'SourceCidrIp' => '0.0.0.0/0']],
             'egress'        => [['NicType' => 'intranet', 'IpProtocol' => 'all', 'PortRange' => '-1/-1','Policy' => 'accept', 'Priority' => '100', 'DestCidrIp' => '0.0.0.0/0']],
         ];
@@ -157,8 +158,15 @@ class EcsClientTest extends AliyunTestBase {
     function getProviderCreateInstance() {
         return [
             'success' => [
-                  ['InstanceName' => self::TEST_ID, 'ImageId' => self::TEST_IMAGE_ID, 'InstanceType' => self::TEST_INSTANCE_TYPE, 'InternetChargeType' => 'PayByTraffic', 'SystemDiskCategory' => 'cloud_efficiency',
-                   'InternetMaxBandwidthOut' => 100]
+                  [
+                  'InstanceName'            => self::TEST_ID,
+                  'ImageId'                 => self::TEST_IMAGE_ID,
+                  'InstanceType'            => self::TEST_INSTANCE_TYPE,
+                  'InternetChargeType'      => 'PayByTraffic',
+                  'SystemDiskCategory'      => 'cloud_efficiency',
+                  'InternetMaxBandwidthOut' => 100,
+                  'UserData'                => $this->getUserData()
+                  ]
             ],
         ];
     }
@@ -196,6 +204,14 @@ class EcsClientTest extends AliyunTestBase {
         $setter = ['InstanceId' => $instance_id];
         $actual = $this->target->startInstance($setter);
         $this->assertInternalType("array", $actual);
+    }
+
+    public function testsnapShot() {
+        $instance_id = $this->target->describeInstance()['Instances']['Instance'][0]['InstanceId'];
+        $this->assertInternalType("string", $instance_id);
+        $actual = $this->target->describeDisk(['InstanceId' => $instance_id])['Disks']['Disk'][0]['DiskId'];
+        var_dump($actual);
+        $this->assertInternalType("string", $actual);
     }
 
     /**
@@ -247,6 +263,7 @@ class EcsClientTest extends AliyunTestBase {
     function getProviderRevokeSecurityGroup() {
         return [
             'ingress/tcp'   => [['IpProtocol' => 'tcp', 'PortRange' => '22/22', 'SourceCidrIp' => '0.0.0.0/0']],
+            'ingress/tcp'   => [['IpProtocol' => 'tcp', 'PortRange' => '80/80', 'SourceCidrIp' => '0.0.0.0/0']],
             'ingress/icmp'  => [['IpProtocol' => 'icmp', 'PortRange' => '-1/-1', 'SourceCidrIp' => '0.0.0.0/0']],
             'egress'        => [['IpProtocol' => 'all', 'PortRange' => '-1/-1', 'DestCidrIp' => '0.0.0.0/0']],
         ];
@@ -280,6 +297,19 @@ class EcsClientTest extends AliyunTestBase {
         $setter = ['VpcId' => $vpc_id];
         $actual = $this->target->deleteVpc($setter);
         $this->assertInternalType("array", $actual);
+    }
+
+    function getUserdata() {
+        $userdata = '#!/bin/bash
+            #packege
+            yum install -y git jq yum-utils device-mapper-persistent-data lvm2
+            yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+            yum-config-manager --disable docker-ce-edge
+            yum install -y docker-ce
+            #Docker
+            service docker start
+            chkconfig docker on';
+        return base64_encode($userdata);
     }
 
 }

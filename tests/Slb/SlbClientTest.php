@@ -2,7 +2,7 @@
 namespace AliyunTest\Slb;
 use AliyunTest\AliyunTestBase;
 use Aliyun\Slb\SlbClient;
-// use Aliyun\Ecs\EcsClient;
+use Aliyun\Ecs\EcsClient;
 
 class SlbClientTest extends AliyunTestBase {
     /**
@@ -18,7 +18,7 @@ class SlbClientTest extends AliyunTestBase {
     public function setUp() {
         parent::setUp();
         $this->ecs = new EcsClient();
-        $this->ecs->setClient(self::TEST_REGION, $_SERVER['TEST_ALIYUN_ACCESS'], $_SERVER['TEST_ALIYUN_SECRET']);
+        $this->ecs->setProfile(['region' => self::TEST_REGION, 'key' => $_SERVER['TEST_ALIYUN_ACCESS'], 'secret' => $_SERVER['TEST_ALIYUN_SECRET']])->build();
     }
     /**
      * Test for testCreateLoadBalancer

@@ -278,4 +278,14 @@ class EcsClient extends Client {
         return $result;
     }
 
+    /**
+     * describe Disk
+     * @param array $setter Setter is options eg.[Method => GET];
+     * @param integer $time Time to delay execution
+     * @return array result
+     */
+    function describeDisk(array $setter = [], $time = 0) {
+        $result = $this->executeClient(new Ecs\DescribeDisksRequest(), $setter+Method::GET, $time);
+        return $result;
+    }
 }
