@@ -26,7 +26,7 @@ class EcsClientTest extends AliyunTestBase {
      * Test for testCreateVpc
      */
     public function testCreateVpc() {
-        $setter = ['CidrBlock' => '10.0.0.0/08', 'VpcName' => 'aliyun-php-test'];
+        $setter = ['CidrBlock' => '10.0.0.0/08', 'VpcName' => '', 'Description' => ''];
         $actual = $this->target->createVpc($setter);
         $this->assertInternalType("array", $actual);
         $this->assertArrayHasKey("VpcId", $actual);
